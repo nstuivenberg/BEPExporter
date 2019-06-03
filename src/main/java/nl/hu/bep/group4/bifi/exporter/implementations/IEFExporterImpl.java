@@ -80,13 +80,13 @@ public class IEFExporterImpl implements IEFExporter {
 		}
 	}
 
-	public String exportFactuurRegel(FactuurRegel factuurRegel) {
+	public String exportFactuurRegel(FactuurRegel factuurRegel, Factuur factuur) {
 		return "R"
 				+exportChar(factuurRegel.getProductNaam(), 60)
 				+exportDouble(factuurRegel.getAantal(), 3, 2)
 				+exportDouble(factuurRegel.getTotaalprijsExBTW()/factuurRegel.getAantal(), 5, 2)
 				+exportBtwType(factuurRegel.getBtwCode())
-				//TODO: datum
+				+LocalDateTime.parse(factuur.getDatumtijd(), DateTimeFormatter.ISO_DATE_TIME).format(DateTimeFormatter.ofPattern("ddMMyyHHmm"))
 				+exportChar(convertUnit(factuurRegel.getUnit()), 6)
 				;
 	}
