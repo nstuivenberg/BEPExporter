@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import nl.hu.bep.group4.bifi.exporter.implementations.IEFExporterImpl;
 import nl.hu.bep.group4.bifi.model.Klant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IEFExporterTest {
@@ -79,7 +80,10 @@ public class IEFExporterTest {
 	public void testExportKlant() {
 		IEFExporterImpl exporter = new IEFExporterImpl();
 		Adres adres = new Adres("nepstraat", "666", "3582XN", "Hell", "1234");
-		Klant klant = new Klant(5, "Testbedrijf", "bv", "testVat", "testRekening", "testGiroNummer", "testBic", null, (List<Adres>) adres, null);
+		List<Adres> adresLijst = new ArrayList<>();
+		adresLijst.add(adres);
+		Klant klant = new Klant(5, "Testbedrijf", "bv", "testVat", "testRekening", "testGiroNummer", "testBic", null, adresLijst, null);
+
 		Persoon persoon = new Persoon(2, "Matthias", "Judas", "tussen", "0609090906", "nee", Persoon.Geslacht.MAN);
 		assertEquals("KTestbedrijf                             Dhr.  Matthias            tussen Judas                                   nepstraat                                                   666       3582XMHell                testVat      testRekening                                                    testBic   ", exporter.exportKlant(klant));
 
