@@ -27,7 +27,7 @@ public class IEFExporterImpl implements IEFExporter {
 	}
 
 	public String exportDouble(double value, int beforeComma, int afterComma) {
-		String result = String.format("%"+beforeComma+"."+afterComma+"f", value).replaceAll(",", "").replaceAll("-", "");
+		String result = String.format("%"+beforeComma+"."+afterComma+"f", value).replaceAll(",", "").replaceAll("\\.", "").replaceAll("-", "");
 		if(result.length() > beforeComma+afterComma) {
 			result = result.substring(result.length()-(beforeComma+afterComma));
 		}
