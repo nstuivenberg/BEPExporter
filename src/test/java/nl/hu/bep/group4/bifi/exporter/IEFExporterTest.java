@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import nl.hu.bep.group4.bifi.exporter.implementations.IEFExporterImpl;
 import nl.hu.bep.group4.bifi.model.Klant;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
