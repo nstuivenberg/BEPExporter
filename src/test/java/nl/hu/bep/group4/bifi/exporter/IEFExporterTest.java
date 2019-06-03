@@ -116,4 +116,10 @@ public class IEFExporterTest {
 		Factuur factuur = new Factuur(klant, "2014-12-03T10:15:30.00Z", 1, factuurregels, "Opmerking", persoon);
 		assertEquals("F03121410151         ", exporter.invoiceInformatieRegel(factuur));
 	}
+	
+	@Test
+	public void testExportBedrijfsInformatie() {
+		IEFExporterImpl exporter = new IEFExporterImpl();
+		assertEquals("BTestnaam                                                    teststraat                                                  123       1234ABtestplaats          BTW          INGB03475                                                       BIC                                                         ", exporter.exportBedrijfsInformatie("Testnaam", "teststraat", "123", "1234AB", "testplaats", "BTW", "INGB03475", "BIC"));
+	}
 }

@@ -116,4 +116,17 @@ public class IEFExporterImpl implements IEFExporter {
 		}
 		return null;
 	}
+
+	public String exportBedrijfsInformatie(String bedrijfsnaam, String straat, String huisnummer, String postcode, String plaats, String btw, String iban, String bic) {
+		return "B"
+				+exportChar(bedrijfsnaam, 60)
+				+exportChar(straat, 60)
+				+exportChar(huisnummer, 10)
+				+exportChar(postcode, 6)
+				+exportChar(plaats, 20)
+				+exportChar(btw, 13)
+				+exportChar(iban, 64)
+				+exportChar(bic, 60)
+				;
+	}
 }
