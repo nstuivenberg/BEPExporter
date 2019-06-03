@@ -5,6 +5,7 @@ import java.util.List;
 import nl.hu.bep.group4.bifi.interfaces.IEFExporter;
 import nl.hu.bep.group4.bifi.model.Factuur;
 import nl.hu.bep.group4.bifi.model.Klant;
+import nl.hu.bep.group4.bifi.model.Persoon;
 
 public class IEFExporterImpl implements IEFExporter {
 
@@ -26,7 +27,7 @@ public class IEFExporterImpl implements IEFExporter {
 	}
 
 	public String exportDouble(double value, int beforeComma, int afterComma) {
-		String result = String.format("%"+beforeComma+"."+afterComma+"f", value).replaceAll(",", "").replaceAll("-", "");
+		String result = String.format("%"+beforeComma+"."+afterComma+"f", value).replaceAll(",", "").replaceAll("\\.", "").replaceAll("-", "");
 		if(result.length() > beforeComma+afterComma) {
 			result = result.substring(result.length()-(beforeComma+afterComma));
 		}
@@ -49,8 +50,29 @@ public class IEFExporterImpl implements IEFExporter {
 		return result;
 	}
 
-	public String exportKlant(Klant klant) {
-		return "";
+	public String exportKlant(Klant klant, Persoon persoon) {
+		return "K"
+				+exportChar(klant.getBedrijfsnaam(), 40)
+				+exportChar(getAanhef(persoon), 6)
+				+exportChar(persoon.getVoornaam(), 20)
+				+exportChar(persoon.getTussenvoegsel(), 7)
+				+exportChar(persoon.getAchternaam(), 40)
+				+exportChar(klant.getFactuurAdres().getStraat(), 60)
+				+exportChar(klant.getFactuurAdres().getHuisnummer(), 10)
+				+exportChar(klant.getFactuurAdres().getPostcode(), 6)
+				+exportChar(klant.getFactuurAdres().getPlaats(), 20)
+				+exportChar(klant.getVAT(), 13)
+				+exportChar(klant.getBankrekeningNummer(), 64)
+				+exportChar(klant.getBiC(), 10)
+				;
+	}
+	
+	private String getAanhef(Persoon persoon) {
+		if(persoon.getGeslacht() == Persoon.Geslacht.MAN) {
+			return "Dhr.";
+		} else {
+			return "Mvr.";
+		}
 	}
 
 }
