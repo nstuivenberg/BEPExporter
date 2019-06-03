@@ -2,10 +2,14 @@ package nl.hu.bep.group4.bifi.exporter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import nl.hu.bep.group4.bifi.model.Adres;
+import nl.hu.bep.group4.bifi.model.Persoon;
 import org.junit.jupiter.api.Test;
 
 import nl.hu.bep.group4.bifi.exporter.implementations.IEFExporterImpl;
 import nl.hu.bep.group4.bifi.model.Klant;
+
+import java.util.List;
 
 public class IEFExporterTest {
 	@Test
@@ -74,8 +78,11 @@ public class IEFExporterTest {
 	@Test
 	public void testExportKlant() {
 		IEFExporterImpl exporter = new IEFExporterImpl();
-		Klant klant = new Klant(5, "Testbedrijf", "bv", "testVat", "testRekening", "testGiroNummer", "testBic", null, null, null);
-		//Sjard, schrijf deze testdata
-		assertEquals("KTestbedrijf                             ", exporter.exportKlant(klant));
+		Adres adres = new Adres("nepstraat", "666", "3582XN", "Hell", "1234");
+		Klant klant = new Klant(5, "Testbedrijf", "bv", "testVat", "testRekening", "testGiroNummer", "testBic", null, (List<Adres>) adres, null);
+		Persoon persoon = new Persoon(2, "Matthias", "Judas", "tussen", "0609090906", "nee", Persoon.Geslacht.MAN);
+		assertEquals("KTestbedrijf                             Dhr.  Matthias            tussen Judas                                   nepstraat                                                   666       3582XMHell                testVat      testRekening                                                    testBic   ", exporter.exportKlant(klant));
+
+
 	}
 }
