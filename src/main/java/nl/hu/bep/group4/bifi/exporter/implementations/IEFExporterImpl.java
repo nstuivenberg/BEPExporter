@@ -1,9 +1,14 @@
 package nl.hu.bep.group4.bifi.exporter.implementations;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import nl.hu.bep.group4.bifi.interfaces.IEFExporter;
 import nl.hu.bep.group4.bifi.model.Factuur;
+import nl.hu.bep.group4.bifi.model.FactuurRegel;
+import nl.hu.bep.group4.bifi.model.FactuurRegel.BTWcode;
+import nl.hu.bep.group4.bifi.model.FactuurRegel.Unit;
 import nl.hu.bep.group4.bifi.model.Klant;
 import nl.hu.bep.group4.bifi.model.Persoon;
 
@@ -75,4 +80,45 @@ public class IEFExporterImpl implements IEFExporter {
 		}
 	}
 
+	public String exportFactuurRegel(FactuurRegel factuurRegel) {
+		return "R"
+				+exportChar(factuurRegel.getProductNaam(), 60)
+				+exportDouble(factuurRegel.getAantal(), 3, 2)
+				+exportDouble(factuurRegel.getTotaalprijsExBTW()/factuurRegel.getAantal(), 5, 2)
+				+exportBtwType(factuurRegel.getBtwCode())
+				//TODO: datum
+				+exportChar(convertUnit(factuurRegel.getUnit()), 6)
+				;
+	}
+	
+	public String invoiceInformatieRegel(Factuur factuur) {
+		try {
+			return "F"
+					+new SimpleDateFormat("ddMMyyHHmm").format(new SimpleDateFormat().parse(factuur.getDatumtijd()))
+					;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}	
+
+	private String convertUnit(Unit unit) {
+		if(unit == Unit.KILOGRAM) {
+			return "kg";
+		}
+		return null;
+	}
+
+	private String exportBtwType(BTWcode btwCode) {
+		switch(btwCode) {
+			case GEEN:
+				return "0";
+			case LAAG:
+				return "2";
+			case HOOG:
+				return "3";
+		}
+		return null;
+	}
 }

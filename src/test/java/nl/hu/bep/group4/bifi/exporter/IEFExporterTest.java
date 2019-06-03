@@ -3,6 +3,7 @@ package nl.hu.bep.group4.bifi.exporter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import nl.hu.bep.group4.bifi.model.Adres;
+import nl.hu.bep.group4.bifi.model.Factuur;
 import nl.hu.bep.group4.bifi.model.FactuurRegel;
 import nl.hu.bep.group4.bifi.model.FactuurRegel.BTWcode;
 import nl.hu.bep.group4.bifi.model.FactuurRegel.Unit;
@@ -87,8 +88,7 @@ public class IEFExporterTest {
 		Klant klant = new Klant(5, "Testbedrijf", "bv", "testVat", "testRekening", "testGiroNummer", "testBic", null, null, adres);
 
 		Persoon persoon = new Persoon(2, "Matthias", "Judas", "tussen", "0609090906", "nee", Persoon.Geslacht.MAN);
-
-		assertEquals("KTestbedrijf                             Dhr.  Matthias            tussen Judas                                   nepstraat                                                   666       3582XMHell                testVat      testRekening                                                    testBic   ", exporter.exportKlant(klant));
+		assertEquals("KTestbedrijf                             Dhr.  Matthias            tussen Judas                                   nepstraat                                                   666       3582XNHell                testVat      testRekening                                                    testBic   ", exporter.exportKlant(klant, persoon));
 	}
 	
 	@Test
@@ -96,7 +96,25 @@ public class IEFExporterTest {
 		IEFExporterImpl exporter = new IEFExporterImpl();
 		FactuurRegel factuurRegel = new FactuurRegel(5,"Bifi betstelauto van worst", 30, 96000, BTWcode.LAAG, Unit.KILOGRAM);
 		
-		assertEquals("Bifi auto van worst                                         0300003200002110818kg", exporter.exportFactuurRegel(factuurRegel));
 
+		assertEquals("RBifi auto van worst                                         0300003200002110818kg    ", exporter.exportFactuurRegel(factuurRegel));
+	}
+
+	@Test
+	public void testInvoiceInformatieRegel() {
+		IEFExporterImpl exporter = new IEFExporterImpl();
+
+		Adres adres = new Adres("nepstraat", "666", "3582XN", "Hell", "1234");
+		Klant klant = new Klant(5, "Testbedrijf", "bv", "testVat", "testRekening", "testGiroNummer", "testBic", null, null, adres);
+		Persoon persoon = new Persoon(2, "Matthias", "Judas", "tussen", "0609090906", "nee", Persoon.Geslacht.MAN);
+
+		FactuurRegel factuurregel = new FactuurRegel();
+
+		List<FactuurRegel> factuurregels = new ArrayList<>();
+		factuurregels.add(factuurregel);
+
+
+		Factuur factuur = new Factuur(klant, "2014-12-03T10:15:30.00Z", 1, factuurregels, "Opmerking", persoon);
+		assertEquals("F2014-12-03T10:15:30.00Z         ", exporter.invoiceInformatieRegel(factuur));
 	}
 }
