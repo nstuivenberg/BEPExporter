@@ -100,12 +100,6 @@ public class IEFExporterTest {
 		FactuurRegel factuurRegel = new FactuurRegel(5,"Bifi betstelauto van worst", 60, 3200, BTWcode.LAAG, Unit.KILOGRAM);
 		
 		assertEquals("RBifi betstelauto van worst.                                 06000032002" + new SimpleDateFormat("ddMMyyHHmm") + "kg", exporter.exportFactuurRegel(factuurRegel));
-		
-		
-		
-		
-
-		assertEquals("KTestbedrijf                             Dhr.  Matthias            tussen Judas                                   nepstraat                                                   666       3582XNHell                testVat      testRekening                                                    testBic   ", exporter.exportKlant(klant, persoon));
 
 	}
 }
