@@ -111,6 +111,7 @@ public class IEFExporterImpl implements IEFExporter {
 	}
 
 	public String invoiceInformatieRegel(Factuur factuur) {
+
 		return null;
 	}
 }
