@@ -12,13 +12,10 @@ import org.junit.jupiter.api.Test;
 import nl.hu.bep.group4.bifi.exporter.implementations.IEFExporterImpl;
 import nl.hu.bep.group4.bifi.model.Klant;
 
-<<<<<<< HEAD
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-=======
->>>>>>> 8ebf0fa28e65ac8e734887189c3336c361522f8e
 public class IEFExporterTest {
 	@Test
 	public void testExportChar() {
