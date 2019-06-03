@@ -1,5 +1,7 @@
 package nl.hu.bep.group4.bifi.exporter.implementations;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import nl.hu.bep.group4.bifi.interfaces.IEFExporter;
@@ -89,7 +91,17 @@ public class IEFExporterImpl implements IEFExporter {
 				;
 	}
 	
-	
+	public String invoiceInformatieRegel(Factuur factuur) {
+		try {
+			return "F"
+					+new SimpleDateFormat("ddMMyyHHmm").format(new SimpleDateFormat().parse(factuur.getDatumtijd()))
+					;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}	
 
 	private String convertUnit(Unit unit) {
 		if(unit == Unit.KILOGRAM) {
@@ -107,10 +119,6 @@ public class IEFExporterImpl implements IEFExporter {
 			case HOOG:
 				return "3";
 		}
-		return null;
-	}
-
-	public String invoiceInformatieRegel(Factuur factuur) {
 		return null;
 	}
 }
