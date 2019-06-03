@@ -78,6 +78,7 @@ public class IEFExporterImpl implements IEFExporter {
 		}
 	}
 
+<<<<<<< HEAD
 	public String exportFactuurRegel(FactuurRegel factuurRegel) {
 		return "R"
 				+exportChar(factuurRegel.getProductNaam(), 60)
@@ -110,4 +111,8 @@ public class IEFExporterImpl implements IEFExporter {
 		return null;
 	}
 
+=======
+	public String invoiceInformatieRegel(Factuur factuur) {
+	}
+>>>>>>> b227083f9e02e56625299c1973428c0a81199acb
 }
