@@ -113,6 +113,6 @@ public class IEFExporterTest {
 		factuurregels.add(factuurregel);
 
 		Factuur factuur = new Factuur(klant, "2014-12-03T10:15:30.00Z", 1, factuurregels, "Opmerking", persoon);
-		assertEquals("F2014-12-03T10:15:30.00Z         ", exporter.invoiceInformatieRegel(factuur));
+		assertEquals("F03121410151         ", exporter.invoiceInformatieRegel(factuur));
 	}
 }

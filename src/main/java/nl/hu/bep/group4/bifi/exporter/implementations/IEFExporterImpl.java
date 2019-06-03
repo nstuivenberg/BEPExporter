@@ -2,6 +2,11 @@ package nl.hu.bep.group4.bifi.exporter.implementations;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import nl.hu.bep.group4.bifi.interfaces.IEFExporter;
@@ -92,15 +97,10 @@ public class IEFExporterImpl implements IEFExporter {
 	}
 	
 	public String invoiceInformatieRegel(Factuur factuur) {
-		try {
-			return "F"
-					+new SimpleDateFormat("ddMMyyHHmm").format(new SimpleDateFormat().parse(factuur.getDatumtijd()))
-					;
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+		return "F"
+			+LocalDateTime.parse(factuur.getDatumtijd(), DateTimeFormatter.ISO_DATE_TIME).format(DateTimeFormatter.ofPattern("ddMMyyHHmm"))
+			+exportChar(""+factuur.getFactuurNummer(), 10)
+			;
 	}	
 
 	private String convertUnit(Unit unit) {
