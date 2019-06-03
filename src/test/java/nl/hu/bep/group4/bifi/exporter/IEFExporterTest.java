@@ -97,9 +97,9 @@ public class IEFExporterTest {
 	@Test
 	public void testExportFactuurRegel() {
 		IEFExporterImpl exporter = new IEFExporterImpl();
-		FactuurRegel factuurRegel = new FactuurRegel(5,"Bifi betstelauto van worst", 60, 3200, BTWcode.LAAG, Unit.KILOGRAM);
+		FactuurRegel factuurRegel = new FactuurRegel(5,"Bifi betstelauto van worst", 30, 96000, BTWcode.LAAG, Unit.KILOGRAM);
 		
-		assertEquals("RBifi betstelauto van worst.                                 06000032002" + new SimpleDateFormat("ddMMyyHHmm") + "kg", exporter.exportFactuurRegel(factuurRegel));
+		assertEquals("Bifi auto van worst                                         0300003200002110818kg", exporter.exportFactuurRegel(factuurRegel));
 
 	}
 }
