@@ -5,7 +5,7 @@ import nl.hu.bep.group4.bifi.interfaces.IEFExporter;
 
 public class IEFExporterFactory {
 
-	public static IEFExporter createFactuurLader() {
+	public static IEFExporter createIEFExporter() {
 		return new IEFExporterImpl();
 	}
 	private IEFExporterFactory() {}
