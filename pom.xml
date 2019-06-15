@@ -70,4 +70,14 @@
 			</snapshots>
 		</repository>
 	</repositories>
+	<distributionManagement>
+		<repository>
+			<id>packagecloud-JonathanTonckensHU</id>
+			<url>packagecloud+https://packagecloud.io/JonathanTonckensHU/hu-test</url>
+		</repository>
+		<snapshotRepository>
+			<id>packagecloud-JonathanTonckensHU</id>
+			<url>packagecloud+https://packagecloud.io/JonathanTonckensHU/hu-test</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
