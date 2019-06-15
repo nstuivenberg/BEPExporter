@@ -113,8 +113,8 @@ public class IEFExporterTest {
 		List<FactuurRegel> factuurregels = new ArrayList<>();
 		factuurregels.add(factuurregel);
 
-
+		// datum komt in zulu time
 		Factuur factuur = new Factuur(klant, "2014-12-03T10:15:30.00Z", 1, factuurregels, "Opmerking", persoon);
-		assertEquals("F2014-12-03T10:15:30.00Z         ", exporter.invoiceInformatieRegel(factuur));
+		assertEquals("F121212          ", exporter.invoiceInformatieRegel(factuur));
 	}
 }

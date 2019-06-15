@@ -94,7 +94,8 @@ public class IEFExporterImpl implements IEFExporter {
 	public String invoiceInformatieRegel(Factuur factuur) {
 		try {
 			return "F"
-					+new SimpleDateFormat("ddMMyyHHmm").format(new SimpleDateFormat().parse(factuur.getDatumtijd()))
+					+new SimpleDateFormat("ddMMyy").format(new SimpleDateFormat().parse(factuur.getDatumtijd()))
+					+exportChar("" + factuur.getFactuurNummer(), 10)
 					;
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
