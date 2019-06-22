@@ -36,10 +36,12 @@ public class IEFExporterImpl implements IEFExporter {
 		if(result.length() > beforeComma+afterComma) {
 			result = result.substring(result.length()-(beforeComma+afterComma));
 		}
+		StringBuilder resultBuilder = new StringBuilder(result);
 		int zeros = beforeComma+afterComma-result.length();
 		for(int i=0;i<zeros;i++) {
-			result = "0"+result;
+			resultBuilder.insert(0, "0");
 		}
+		result = resultBuilder.toString();
 		if(value < 0) {
 			result = result.replaceAll("0", " ");
 			result = result.replaceAll("1", "!");
