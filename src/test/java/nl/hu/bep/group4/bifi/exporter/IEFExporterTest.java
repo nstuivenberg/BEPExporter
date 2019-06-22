@@ -93,23 +93,50 @@ public class IEFExporterTest {
 	}
 	
 	@Test
-	public void testExportKlant() {
+	public void testExportKlantMan() {
 		IEFExporterImpl exporter = new IEFExporterImpl();
 		Adres adres = new Adres("nepstraat", "666", "3582XN", "Hell", "1234");
 		Klant klant = new Klant(5, "Testbedrijf", "bv", "testVat", "testRekening", "testGiroNummer", "testBic", null, null, adres);
 
-		Persoon persoon = new Persoon(2, "Matthias", "Judas", "tussen", "0609090906", "nee", Persoon.Geslacht.MAN);
+		Persoon persoon = new Persoon(2, "Matthias", "tussen", "Judas", "0609090906", "nee", Persoon.Geslacht.MAN);
 		assertEquals("KTestbedrijf                             Dhr.  Matthias            tussen Judas                                   nepstraat                                                   666       3582XNHell                testVat      testRekening                                                    testBic   ", exporter.exportKlant(klant, persoon));
+	}
+	
+	@Test
+	public void testExportKlantVrouw() {
+		IEFExporterImpl exporter = new IEFExporterImpl();
+		Adres adres = new Adres("nepstraat", "666", "3582XN", "Hell", "1234");
+		Klant klant = new Klant(5, "Testbedrijf", "bv", "testVat", "testRekening", "testGiroNummer", "testBic", null, null, adres);
+
+		Persoon persoon = new Persoon(2, "Joanna", "tussen", "Judas", "0609090906", "nee", Persoon.Geslacht.VROUW);
+		assertEquals("KTestbedrijf                             Mvr.  Joanna              tussen Judas                                   nepstraat                                                   666       3582XNHell                testVat      testRekening                                                    testBic   ", exporter.exportKlant(klant, persoon));
 	}
 	
 	@Test
 	public void testExportFactuurRegel() {
 		IEFExporterImpl exporter = new IEFExporterImpl();
-		Factuur factuur = new Factuur();
-		factuur.setDatumtijd("2014-12-03T10:15:30.00Z");
-		FactuurRegel factuurRegel = new FactuurRegel(5,"Bifi bestelauto van worst", 30, 96000, BTWcode.LAAG, Unit.KILOGRAM);
-		
-		assertEquals("RBifi bestelauto van worst                                   03000032000020312141015kg    ", exporter.exportFactuurRegel(factuurRegel, factuur));
+		FactuurRegel factuurRegel = new FactuurRegel(5,"Bifi auto van worst", 30, 96000, BTWcode.LAAG, Unit.KILOGRAM);
+		Factuur factuur = new Factuur(null, "2018-08-11T10:15:30.00Z", 0, null, null, null); 
+
+		assertEquals("RBifi auto van worst                                         03000032000021108181015kg    ", exporter.exportFactuurRegel(factuurRegel, factuur));
+	}
+	
+	@Test
+	public void testExportFactuurRegelBtwHoog() {
+		IEFExporterImpl exporter = new IEFExporterImpl();
+		FactuurRegel factuurRegel = new FactuurRegel(5,"Bifi auto van worst", 30, 96000, BTWcode.HOOG, Unit.KILOGRAM);
+		Factuur factuur = new Factuur(null, "2018-08-11T10:15:30.00Z", 0, null, null, null); 
+
+		assertEquals("RBifi auto van worst                                         03000032000031108181015kg    ", exporter.exportFactuurRegel(factuurRegel, factuur));
+	}
+	
+	@Test
+	public void testExportFactuurRegelBtwGeenNoUnit() {
+		IEFExporterImpl exporter = new IEFExporterImpl();
+		FactuurRegel factuurRegel = new FactuurRegel(5,"Bifi auto van worst", 30, 96000, BTWcode.GEEN, null);
+		Factuur factuur = new Factuur(null, "2018-08-11T10:15:30.00Z", 0, null, null, null); 
+
+		assertEquals("RBifi auto van worst                                         03000032000001108181015      ", exporter.exportFactuurRegel(factuurRegel, factuur));
 	}
 	
 	@Test
@@ -141,7 +168,7 @@ public class IEFExporterTest {
 
 
 		Factuur factuur = new Factuur(klant, "2014-12-03T10:15:30.00Z", 1, factuurregels, "Opmerking", persoon);
-		assertEquals("F0312141         ", exporter.invoiceInformatieRegel(factuur));
+		assertEquals("F03121410151         ", exporter.invoiceInformatieRegel(factuur));
 	}
 	
 	@Test
@@ -193,6 +220,15 @@ public class IEFExporterTest {
 	@Test
 	public void testExportBedrijfsInformatie() {
 		IEFExporterImpl exporter = new IEFExporterImpl();
-		assertEquals("BTestnaam                                                    teststraat                                                  123       1234ABtestplaats          BTW          INGB03475                                                       BIC                                                         ", exporter.exportBedrijfsInformatie("Testnaam", "teststraat", "123", "1234AB", "testplaats", "BTW", "INGB03475", "BIC"));
+		BedrijfsInformatie bedrijfsInformatie = new BedrijfsInformatie();
+		bedrijfsInformatie.setBedrijfsnaam("Testnaam");
+		bedrijfsInformatie.setStraat("teststraat");
+		bedrijfsInformatie.setHuisnummer("123");
+		bedrijfsInformatie.setPostcode("1234AB");
+		bedrijfsInformatie.setPlaats("testplaats");
+		bedrijfsInformatie.setBtw("BTW");
+		bedrijfsInformatie.setIban("INGB03475");
+		bedrijfsInformatie.setBic("BIC");
+		assertEquals("BTestnaam                                                    teststraat                                                  123       1234ABtestplaats          BTW          INGB03475                                                       BIC                                                         ", exporter.exportBedrijfsInformatie(bedrijfsInformatie));
 	}
 }

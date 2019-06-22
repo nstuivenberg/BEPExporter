@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import nl.hu.bep.group4.bifi.interfaces.IEFExporter;
 import nl.hu.bep.group4.bifi.model.Factuur;
 import nl.hu.bep.group4.bifi.model.FactuurRegel;
@@ -130,6 +131,7 @@ public class IEFExporterImpl implements IEFExporter {
 				+ exportChar(convertUnit(factuurRegel.getUnit()), 6);
 	}
 	
+
 	public String exportTekstRegel(String productOmschrijving) {
 		if(productOmschrijving.length() >= 60) {
 			productOmschrijving = "T" + exportChar(productOmschrijving.substring(60, productOmschrijving.length()), 120);
