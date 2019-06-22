@@ -109,13 +109,13 @@ public class IEFExporterImpl implements IEFExporter {
 
 	private String exportBtwType(BTWcode btwCode) {
 		switch(btwCode) {
-			case GEEN:
-			default:
-				return "0";
 			case LAAG:
 				return "2";
 			case HOOG:
 				return "3";
+			case GEEN:
+			default:
+				return "0";
 		}
 	}
 
