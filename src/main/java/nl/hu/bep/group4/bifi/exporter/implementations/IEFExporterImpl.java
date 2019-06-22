@@ -21,25 +21,27 @@ public class IEFExporterImpl implements IEFExporter {
 	}
 	
 	public String exportChar(String value, int length) {
-		String result = value;
-		if(result.length() > length) {
-			result = result.substring(0, length);
+		StringBuilder resultBuilder = new StringBuilder(value);
+		if(value.length() > length) {
+			resultBuilder = new StringBuilder(value.substring(0, length));
 		}
 		for(int i=0;i<length-value.length();i++) {
-			result += " ";
+			resultBuilder.append(" ");
 		}
-		return result;
+		return resultBuilder.toString();
 	}
 
 	public String exportDouble(double value, int beforeComma, int afterComma) {
-		String result = String.format("%"+beforeComma+"."+afterComma+"f", value).replaceAll(",", "").replaceAll("\\.", "").replaceAll("-", "");
+		String result = String.format(String.format("%s%s.%sf", "%", beforeComma, afterComma), value).replaceAll(",", "").replaceAll("\\.", "").replaceAll("-", "");
 		if(result.length() > beforeComma+afterComma) {
 			result = result.substring(result.length()-(beforeComma+afterComma));
 		}
+		StringBuilder resultBuilder = new StringBuilder(result);
 		int zeros = beforeComma+afterComma-result.length();
 		for(int i=0;i<zeros;i++) {
-			result = "0"+result;
+			resultBuilder.insert(0, "0");
 		}
+		result = resultBuilder.toString();
 		if(value < 0) {
 			result = result.replaceAll("0", " ");
 			result = result.replaceAll("1", "!");
@@ -102,31 +104,31 @@ public class IEFExporterImpl implements IEFExporter {
 		if(unit == Unit.KILOGRAM) {
 			return "kg";
 		}
-		return null;
+		return "";
 	}
 
 	private String exportBtwType(BTWcode btwCode) {
 		switch(btwCode) {
-			case GEEN:
-				return "0";
 			case LAAG:
 				return "2";
 			case HOOG:
 				return "3";
+			case GEEN:
+			default:
+				return "0";
 		}
-		return null;
 	}
 
-	public String exportBedrijfsInformatie(String bedrijfsnaam, String straat, String huisnummer, String postcode, String plaats, String btw, String iban, String bic) {
+	public String exportBedrijfsInformatie(BedrijfsInformatie bedrijfsInformatie) {
 		return "B"
-				+exportChar(bedrijfsnaam, 60)
-				+exportChar(straat, 60)
-				+exportChar(huisnummer, 10)
-				+exportChar(postcode, 6)
-				+exportChar(plaats, 20)
-				+exportChar(btw, 13)
-				+exportChar(iban, 64)
-				+exportChar(bic, 60)
+				+exportChar(bedrijfsInformatie.getBedrijfsnaam(), 60)
+				+exportChar(bedrijfsInformatie.getStraat(), 60)
+				+exportChar(bedrijfsInformatie.getHuisnummer(), 10)
+				+exportChar(bedrijfsInformatie.getPostcode(), 6)
+				+exportChar(bedrijfsInformatie.getPlaats(), 20)
+				+exportChar(bedrijfsInformatie.getBtw(), 13)
+				+exportChar(bedrijfsInformatie.getIban(), 64)
+				+exportChar(bedrijfsInformatie.getBic(), 60)
 				;
 	}
 }
