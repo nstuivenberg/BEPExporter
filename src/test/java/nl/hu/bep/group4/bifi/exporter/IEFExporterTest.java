@@ -86,7 +86,7 @@ public class IEFExporterTest {
 		Adres adres = new Adres("nepstraat", "666", "3582XN", "Hell", "1234");
 		Klant klant = new Klant(5, "Testbedrijf", "bv", "testVat", "testRekening", "testGiroNummer", "testBic", null, null, adres);
 
-		Persoon persoon = new Persoon(2, "Matthias", "Judas", "tussen", "0609090906", "nee", Persoon.Geslacht.MAN);
+		Persoon persoon = new Persoon(2, "Matthias", "tussen", "Judas", "0609090906", "nee", Persoon.Geslacht.MAN);
 		assertEquals("KTestbedrijf                             Dhr.  Matthias            tussen Judas                                   nepstraat                                                   666       3582XNHell                testVat      testRekening                                                    testBic   ", exporter.exportKlant(klant, persoon));
 	}
 	

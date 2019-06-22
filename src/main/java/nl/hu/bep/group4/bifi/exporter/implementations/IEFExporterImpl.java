@@ -21,14 +21,14 @@ public class IEFExporterImpl implements IEFExporter {
 	}
 	
 	public String exportChar(String value, int length) {
-		String result = value;
-		if(result.length() > length) {
-			result = result.substring(0, length);
+		StringBuilder resultBuilder = new StringBuilder(value);
+		if(value.length() > length) {
+			resultBuilder = new StringBuilder(value.substring(0, length));
 		}
 		for(int i=0;i<length-value.length();i++) {
-			result += " ";
+			resultBuilder.append(" ");
 		}
-		return result;
+		return resultBuilder.toString();
 	}
 
 	public String exportDouble(double value, int beforeComma, int afterComma) {
