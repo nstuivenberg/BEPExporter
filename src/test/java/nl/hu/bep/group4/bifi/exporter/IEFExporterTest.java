@@ -10,6 +10,7 @@ import nl.hu.bep.group4.bifi.model.FactuurRegel.Unit;
 import nl.hu.bep.group4.bifi.model.Persoon;
 import org.junit.jupiter.api.Test;
 
+import nl.hu.bep.group4.bifi.exporter.implementations.BedrijfsInformatie;
 import nl.hu.bep.group4.bifi.exporter.implementations.IEFExporterImpl;
 import nl.hu.bep.group4.bifi.model.Klant;
 
@@ -148,6 +149,15 @@ public class IEFExporterTest {
 	@Test
 	public void testExportBedrijfsInformatie() {
 		IEFExporterImpl exporter = new IEFExporterImpl();
-		assertEquals("BTestnaam                                                    teststraat                                                  123       1234ABtestplaats          BTW          INGB03475                                                       BIC                                                         ", exporter.exportBedrijfsInformatie("Testnaam", "teststraat", "123", "1234AB", "testplaats", "BTW", "INGB03475", "BIC"));
+		BedrijfsInformatie bedrijfsInformatie = new BedrijfsInformatie();
+		bedrijfsInformatie.setBedrijfsnaam("Testnaam");
+		bedrijfsInformatie.setStraat("teststraat");
+		bedrijfsInformatie.setHuisnummer("123");
+		bedrijfsInformatie.setPostcode("1234AB");
+		bedrijfsInformatie.setPlaats("testplaats");
+		bedrijfsInformatie.setBtw("BTW");
+		bedrijfsInformatie.setIban("INGB03475");
+		bedrijfsInformatie.setBic("BIC");
+		assertEquals("BTestnaam                                                    teststraat                                                  123       1234ABtestplaats          BTW          INGB03475                                                       BIC                                                         ", exporter.exportBedrijfsInformatie(bedrijfsInformatie));
 	}
 }
