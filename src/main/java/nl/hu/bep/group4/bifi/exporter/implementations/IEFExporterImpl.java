@@ -104,19 +104,19 @@ public class IEFExporterImpl implements IEFExporter {
 		if(unit == Unit.KILOGRAM) {
 			return "kg";
 		}
-		return null;
+		return "";
 	}
 
 	private String exportBtwType(BTWcode btwCode) {
 		switch(btwCode) {
 			case GEEN:
+			default:
 				return "0";
 			case LAAG:
 				return "2";
 			case HOOG:
 				return "3";
 		}
-		return null;
 	}
 
 	public String exportBedrijfsInformatie(String bedrijfsnaam, String straat, String huisnummer, String postcode, String plaats, String btw, String iban, String bic) {
