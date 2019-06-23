@@ -60,7 +60,7 @@ public class IEFExporterImpl implements IEFExporter {
 		try(FileWriter fileWriter = new FileWriter(property+slash+fileName)) {
 			fileWriter.write(sb.toString());
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new IllegalStateException("Could not create the file. \n" + e);
 		}
 		return sb.toString();
 	}
