@@ -20,7 +20,7 @@ import nl.hu.bep.group4.bifi.model.Persoon;
 public class IEFExporterImpl implements IEFExporter {
 
 	@Override
-	public void exportFacturen(List<Factuur> facturen){
+	public String exportFacturen(List<Factuur> facturen){
 		int i = 0;
 		Map<Integer, String> factuurregels = new HashMap<>();
 		Writer file;
@@ -50,25 +50,27 @@ public class IEFExporterImpl implements IEFExporter {
 			String slash = File.separator;
 			String property = System.getProperty("user.home");
 			String fileName ="createdFile.txt";
-			file = new FileWriter(property+slash+"AppName"+slash+fileName);
+			file = new FileWriter(property+slash+fileName);
 			file.write(sb.toString());
 			file.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return sb.toString();
 	}
 
 	public String exportChar(String value, int length) {
-		String result = value;
-		if (result.length() > length) {
-			result = result.substring(0, length);
+		StringBuilder resultBuilder = new StringBuilder();
+		resultBuilder.append(value);
+		if(value.length() > length) {
+			resultBuilder = new StringBuilder(value.substring(0, length));
 		}
-		for (int i = 0; i < length - value.length(); i++) {
-			result += " ";
+		for(int i=0;i<length-value.length();i++) {
+			resultBuilder.append(" ");
 		}
-		return result;
+		return resultBuilder.toString();
 	}
-
+	
 	public String exportDouble(double value, int beforeComma, int afterComma) {
 		String result = String.format("%" + beforeComma + "." + afterComma + "f", value).replaceAll(",", "")
 				.replaceAll("\\.", "").replaceAll("-", "");

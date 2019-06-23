@@ -1,6 +1,8 @@
 package nl.hu.bep.group4.bifi.exporter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import nl.hu.bep.group4.bifi.model.Adres;
 import nl.hu.bep.group4.bifi.model.Factuur;
 import nl.hu.bep.group4.bifi.model.FactuurRegel;
@@ -10,8 +12,11 @@ import nl.hu.bep.group4.bifi.model.Persoon;
 import org.junit.jupiter.api.Test;
 
 import nl.hu.bep.group4.bifi.exporter.implementations.IEFExporterImpl;
+import nl.hu.bep.group4.bifi.interfaces.IEFExporter;
 import nl.hu.bep.group4.bifi.model.Klant;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -168,7 +173,7 @@ public class IEFExporterTest {
 
 
 		Factuur factuur = new Factuur(klant, "2014-12-03T10:15:30.00Z", 1, factuurregels, "Opmerking", persoon);
-		assertEquals("F03121410151         ", exporter.invoiceInformatieRegel(factuur));
+		assertEquals("F0312141         ", exporter.invoiceInformatieRegel(factuur));
 	}
 	
 	@Test
@@ -180,14 +185,14 @@ public class IEFExporterTest {
 		Adres adres = new Adres("nepstraat", "666", "3582XN", "Hell", "1234");
 		Klant klant = new Klant(5, "Testbedrijf", "bv", "testVat", "testRekening", "testGiroNummer", "testBic", null, null, adres);
 		FactuurRegel factuurRegel = new FactuurRegel(5,"Bifi bestelauto van worst", 30, 96000, BTWcode.LAAG, Unit.KILOGRAM);
-		Persoon persoon = new Persoon(2, "Matthias", "Judas", "tussen", "0609090906", "nee", Persoon.Geslacht.MAN);
+		Persoon persoon = new Persoon(2, "Matthias", "tussen", "Judas", "0609090906", "nee", Persoon.Geslacht.MAN);
 		factuurregels.add(factuurRegel);
 		Factuur factuur = new Factuur(klant, "2014-12-03T10:15:30.00Z", 1, factuurregels, "String", persoon);
 		facturen.add(factuur);
 		
 		exporter.exportFacturen(facturen);
 		
-//		assertEquals("BFactory Ansbach                                             Eyber Strasse                                               81        9152BIAnsbach             DE81549090312DE23DEU000198761111                                             1234567890\nKTestbedrijf                             Dhr.  Matthias            tussen Judas                                   nepstraat                                                   666       3582XNHell                testVat      testRekening                                                    testBic   \nF0312141         \nRBifi bestelauto van worst                                   03000032000020312141015kg    \n", exporter.exportFacturen(facturen));
+		assertEquals("BFactory Ansbach                                             Eyber Strasse                                               81        9152BIAnsbach             DE81549090312DE23DEU000198761111                                             1234567890\nKTestbedrijf                             Dhr.  Matthias            tussen Judas                                   nepstraat                                                   666       3582XNHell                testVat      testRekening                                                    testBic   \nF0312141         \nRBifi bestelauto van worst                                   03000032000020312141015kg    \n", exporter.exportFacturen(facturen));
 
 	}
 	
@@ -201,9 +206,9 @@ public class IEFExporterTest {
 		Klant klant = new Klant(5, "Testbedrijf", "bv", "testVat", "testRekening", "testGiroNummer", "testBic", null, null, adres);
 		FactuurRegel factuurRegel = new FactuurRegel(5,"Bifi bestelauto van worst", 30, 96000, BTWcode.LAAG, Unit.KILOGRAM);
 		FactuurRegel factuurRegel2 = new FactuurRegel(6,"Bifi worst", 300, 15011, BTWcode.LAAG, Unit.KILOGRAM);
-		Persoon persoon = new Persoon(2, "Matthias", "Judas", "tussen", "0609090906", "nee", Persoon.Geslacht.MAN);
 		factuurregels.add(factuurRegel);
 		factuurregels.add(factuurRegel2);
+		Persoon persoon = new Persoon(2, "Matthias", "tussen", "Judas", "0609090906", "nee", Persoon.Geslacht.MAN);
 		Factuur factuur = new Factuur(klant, "2014-12-03T10:15:30.00Z", 1, factuurregels, "String", persoon);
 		facturen.add(factuur);
 		
@@ -213,8 +218,29 @@ public class IEFExporterTest {
 				"KTestbedrijf                             Dhr.  Matthias            tussen Judas                                   nepstraat                                                   666       3582XNHell                testVat      testRekening                                                    testBic   \n" + 
 				"F0312141         \n" + 
 				"RBifi bestelauto van worst                                   03000032000020312141015kg    \n" + 
-				"RBifi worst                                                  30000000500420312141015kg   \n", exporter.exportFacturen(facturen));
-
+				"RBifi worst                                                  30000000500420312141015kg    \n", exporter.exportFacturen(facturen));
+	}
+	
+	@Test
+	public void testFileBestaatNaFileExport() {
+		IEFExporterImpl exporter = new IEFExporterImpl();
+		List<Factuur> facturen = new ArrayList<>();
+		List<FactuurRegel> factuurregels = new ArrayList<>();
+		
+		Adres adres = new Adres("nepstraat", "666", "3582XN", "Hell", "1234");
+		Klant klant = new Klant(5, "Testbedrijf", "bv", "testVat", "testRekening", "testGiroNummer", "testBic", null, null, adres);
+		FactuurRegel factuurRegel = new FactuurRegel(5,"Bifi bestelauto van worst", 30, 96000, BTWcode.LAAG, Unit.KILOGRAM);
+		Persoon persoon = new Persoon(2, "Matthias", "Judas", "tussen", "0609090906", "nee", Persoon.Geslacht.MAN);
+		factuurregels.add(factuurRegel);
+		Factuur factuur = new Factuur(klant, "2014-12-03T10:15:30.00Z", 1, factuurregels, "String", persoon);
+		facturen.add(factuur);
+		exporter.exportFacturen(facturen);
+		String property = System.getProperty("user.home");
+		File file = new File(property + "/createdFile.txt");
+		
+		assertTrue(file.exists());
+		
+		file.delete();
 	}
 	
 	@Test
