@@ -3,7 +3,6 @@ package nl.hu.bep.group4.bifi.exporter.implementations;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,27 +23,29 @@ public class IEFExporterImpl implements IEFExporter {
 		int i = 0;
 		Map<Integer, String> factuurregels = new HashMap<>();
 		
-		StringBuilder IEFRegel = new StringBuilder();
-		IEFRegel.append("B"
-				+exportChar("Factory Ansbach", 60) 
-				+exportChar("Eyber Strasse", 60)
-				+exportChar("81", 10)
-				+"9152BI"
-				+exportChar("Ansbach", 20)
-				+"DE81549090312"
-				+exportChar("DE23DEU000198761111", 64)
-				+"1234567890"
-				+"\n"
-				);
+		StringBuilder iefRegel = new StringBuilder();
+		iefRegel.append("B");
+		iefRegel.append(exportChar("Factory Ansbach", 60) );
+		iefRegel.append(exportChar("Eyber Strasse", 60));
+		iefRegel.append(exportChar("81", 10));
+		iefRegel.append("9152BI");
+		iefRegel.append(exportChar("Ansbach", 20));
+		iefRegel.append("DE81549090312");
+		iefRegel.append(exportChar("DE23DEU000198761111", 64));
+		iefRegel.append("1234567890");
+		iefRegel.append("\n");
 
 		for (Factuur factuur : facturen) {
-			IEFRegel.append(exportKlant(factuur.getKlant(), factuur.getContactPersoon()) + "\n");
-			IEFRegel.append(invoiceInformatieRegel(factuur) + "\n");
+			iefRegel.append(exportKlant(factuur.getKlant(), factuur.getContactPersoon()));
+			iefRegel.append("\n");
+			iefRegel.append(invoiceInformatieRegel(factuur));
+			iefRegel.append("\n");
 			for (FactuurRegel regel : factuur.getFactuurregels()) {
-				IEFRegel.append(exportFactuurRegel(regel, factuur) + "\n");
-				IEFRegel.append(exportTekstRegel(regel.getProductNaam()));
+				iefRegel.append(exportFactuurRegel(regel, factuur));
+				iefRegel.append("\n");
+				iefRegel.append(exportTekstRegel(regel.getProductNaam()));
 			}
-			factuurregels.put(i, IEFRegel.toString());
+			factuurregels.put(i, iefRegel.toString());
 			i += 1;
 		}
 		
@@ -58,7 +59,6 @@ public class IEFExporterImpl implements IEFExporter {
 		String fileName ="createdFile.txt";
 		try(FileWriter fileWriter = new FileWriter(property+slash+fileName)) {
 			fileWriter.write(sb.toString());
-			fileWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -78,8 +78,12 @@ public class IEFExporterImpl implements IEFExporter {
 	}
 	
 	public String exportDouble(double value, int beforeComma, int afterComma) {
-		String result = String.format("%" + beforeComma + "." + afterComma + "f", value).replaceAll(",", "")
-				.replaceAll("\\.", "").replaceAll("-", "");
+
+		String result = String.format("%" + beforeComma + "." + afterComma + "f", value)
+				.replaceAll(",", "")
+				.replaceAll("\\.", "")
+				.replaceAll("-", "");
+
 		if (result.length() > beforeComma + afterComma) {
 			result = result.substring(result.length() - (beforeComma + afterComma));
 		}
