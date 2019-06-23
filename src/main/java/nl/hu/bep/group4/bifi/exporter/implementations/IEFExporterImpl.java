@@ -23,7 +23,6 @@ public class IEFExporterImpl implements IEFExporter {
 	public String exportFacturen(List<Factuur> facturen){
 		int i = 0;
 		Map<Integer, String> factuurregels = new HashMap<>();
-		Writer file;
 		
 		StringBuilder IEFRegel = new StringBuilder();
 		IEFRegel.append("B"
@@ -54,13 +53,12 @@ public class IEFExporterImpl implements IEFExporter {
 			sb.append(regel);
 		}
 		
-		try {
-			String slash = File.separator;
-			String property = System.getProperty("user.home");
-			String fileName ="createdFile.txt";
-			file = new FileWriter(property+slash+fileName);
-			file.write(sb.toString());
-			file.close();
+		String slash = File.separator;
+		String property = System.getProperty("user.home");
+		String fileName ="createdFile.txt";
+		try(FileWriter fileWriter = new FileWriter(property+slash+fileName)) {
+			fileWriter.write(sb.toString());
+			fileWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
