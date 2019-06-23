@@ -11,13 +11,11 @@ import nl.hu.bep.group4.bifi.model.FactuurRegel.Unit;
 import nl.hu.bep.group4.bifi.model.Persoon;
 import org.junit.jupiter.api.Test;
 
+import nl.hu.bep.group4.bifi.exporter.implementations.BedrijfsInformatie;
 import nl.hu.bep.group4.bifi.exporter.implementations.IEFExporterImpl;
-import nl.hu.bep.group4.bifi.interfaces.IEFExporter;
 import nl.hu.bep.group4.bifi.model.Klant;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
