@@ -3,6 +3,8 @@ package nl.hu.bep.group4.bifi.exporter.implementations;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,8 +68,7 @@ public class IEFExporterImpl implements IEFExporter {
 	}
 
 	public String exportChar(String value, int length) {
-		StringBuilder resultBuilder = new StringBuilder();
-		resultBuilder.append(value);
+		StringBuilder resultBuilder = new StringBuilder(value);
 		if(value.length() > length) {
 			resultBuilder = new StringBuilder(value.substring(0, length));
 		}
@@ -78,20 +79,17 @@ public class IEFExporterImpl implements IEFExporter {
 	}
 	
 	public String exportDouble(double value, int beforeComma, int afterComma) {
-
-		String result = String.format("%" + beforeComma + "." + afterComma + "f", value)
-				.replaceAll(",", "")
-				.replaceAll("\\.", "")
-				.replaceAll("-", "");
-
-		if (result.length() > beforeComma + afterComma) {
-			result = result.substring(result.length() - (beforeComma + afterComma));
+		String result = String.format(String.format("%s%s.%sf", "%", beforeComma, afterComma), value).replaceAll(",", "").replaceAll("\\.", "").replaceAll("-", "");
+		if(result.length() > beforeComma+afterComma) {
+			result = result.substring(result.length()-(beforeComma+afterComma));
 		}
-		int zeros = beforeComma + afterComma - result.length();
-		for (int i = 0; i < zeros; i++) {
-			result = "0" + result;
+		StringBuilder resultBuilder = new StringBuilder(result);
+		int zeros = beforeComma+afterComma-result.length();
+		for(int i=0;i<zeros;i++) {
+			resultBuilder.insert(0, "0");
 		}
-		if (value < 0) {
+		result = resultBuilder.toString();
+		if(value < 0) {
 			result = result.replaceAll("0", " ");
 			result = result.replaceAll("1", "!");
 			result = result.replaceAll("2", "\"");
@@ -147,7 +145,6 @@ public class IEFExporterImpl implements IEFExporter {
 				+exportChar(convertUnit(factuurRegel.getUnit()), 6)
 				;
 	}
-	
 
 	public String exportTekstRegel(String productOmschrijving) {
 		if(productOmschrijving.length() >= 60) {
@@ -159,11 +156,10 @@ public class IEFExporterImpl implements IEFExporter {
 	}
 	
 	public String invoiceInformatieRegel(Factuur factuur) {
-		String factuurNummer = Integer.toString(factuur.getFactuurNummer());
-		String date = exportDate(factuur.getDatumtijd());
 		return "F"
-				+date
-				+exportChar(factuurNummer, 10);
+			+LocalDateTime.parse(factuur.getDatumtijd(), DateTimeFormatter.ISO_DATE_TIME).format(DateTimeFormatter.ofPattern("ddMMyy"))
+			+exportChar(""+factuur.getFactuurNummer(), 10)
+			;
 	}
 
 	private String convertUnit(Unit unit) {
